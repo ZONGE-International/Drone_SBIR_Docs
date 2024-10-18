@@ -1,0 +1,146 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3-Channel ADC &mdash; Drone SBIR  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/zonge.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Mechanical Systems" href="../mechanical_systems/toc.html" />
+    <link rel="prev" title="Requirements" href="requirements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/Zonge_logo_white_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../project_goals.html">Project Goals &amp; Objectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system_design/toc.html">SystemDesign</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../antenna/toc.html">Antenna</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="toc.html">Data_Logger</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3-Channel ADC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mechanical_systems/toc.html">Mechanical Systems</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Drone SBIR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="toc.html">Data_Logger</a></li>
+      <li class="breadcrumb-item active">3-Channel ADC</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/data_logger/adc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="channel-adc">
+<h1>3-Channel ADC<a class="headerlink" href="#channel-adc" title="Link to this heading"></a></h1>
+<p>Based on Analog Devices <a class="reference external" href="https://www.analog.com/media/en/technical-documentation/data-sheets/ad4030-24-4032-24.pdf">AD4030-24</a> .</p>
+<p>The current version of the <a class="reference external" href="../_static/3-channel_ADC.pdf">3-channel data logger schematic</a> is meant for discussion. It is not intended to be a finalized design.</p>
+<p>Design decisions for the ADC board:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Input filter:</p>
+<ol class="arabic simple">
+<li><p>Do we need an input filter in front of the ADC?</p></li>
+<li><p>Currently the schematic contains elements for passive filter elements in common mode and differential mode. The resistors are 0 Ohm types and all capacitors are DNP. This allows to add a passive filter if we want to.</p></li>
+</ol>
+</li>
+<li><p>Shielded connector:</p>
+<ol class="arabic simple">
+<li><p>Do we want to add a shield to the 10-pin connector between the analog board and the digital board?</p></li>
+</ol>
+</li>
+<li><p>Buffer amplifier for the reference:</p>
+<ol class="arabic simple">
+<li><p>On page 27 of the <a class="reference external" href="https://www.analog.com/media/en/technical-documentation/data-sheets/ad4030-24-4032-24.pdf">AD4030-24 data sheet</a> the options for the reference input of the ADC are discussed. I’m currently undecided if it is better to use the REF or the REFIN ports of the ADC. The data sheet mentions that the best possible gain error is achieved with an external buffer and the REF pin. However, figure 28 shows an increased error in case of a burst in combination with an externally driven reference. This should never happen in our application.</p></li>
+<li><p>What is the better option to fight noise. A driver close to the reference source should keep the reference signal low impedance and lower the overall noise.</p></li>
+<li><p>We need a reference buffer anyhow as the reference voltage is needed on the analog board. What is the reference voltage actually needed for?</p></li>
+</ol>
+</li>
+</ol>
+</div></blockquote>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="requirements.html" class="btn btn-neutral float-left" title="Requirements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../mechanical_systems/toc.html" class="btn btn-neutral float-right" title="Mechanical Systems" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ZONGE International.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
